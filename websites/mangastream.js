@@ -1,8 +1,8 @@
 'use strict'
 const axios = require('axios');
 const cheerio = require('cheerio');
-const helpers = require('./helpers.js');
-const constants = require('./constants');
+const helpers = require('../helpers.js');
+const constants = require('../constants');
 
 const mangaUrlSet = new Set();
 
