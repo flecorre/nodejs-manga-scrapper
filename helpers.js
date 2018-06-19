@@ -1,6 +1,6 @@
 'use strict'
 const fs = require('fs');
-const newChapters = require('./newChapters');
+const newChapters = require('./new-chapters');
 const constants = require('./constants');
 
 const writeJson = (json, newChapters) => {
