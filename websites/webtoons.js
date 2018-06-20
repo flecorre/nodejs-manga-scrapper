@@ -1,36 +1,44 @@
 'use strict'
-
-'use strict'
 const axios = require('axios');
 const cheerio = require('cheerio');
 const helpers = require('../helpers.js');
 const constants = require('../constants');
 
+const mangaUrlSet = new Set();
+
 const scrapWebtoons = async (mangaJsonArray) => {
-    const godOfHighschoolChapterUrl = await fetchGOH();
-    const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(godOfHighschoolChapterUrl);
+    await fetchMangas(constants.WEBTOONS_GOH_URL);
+    await fetchMangas(constants.WEBTOONS_NOBLESSE_URL);
+    await fetchMangas(constants.WEBTOONS_THEGAMER_URL);
+    await fetchMangas(constants.WEBTOONS_DICE_URL);
+    const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
     helpers.checkIfNewChapters(mangaJsonArray, mangaFetchedArray, constants.WEBTOONS);
 }
 
-const fetchGOH = async () => {
-    const res = await axios.get('https://www.webtoons.com/en/action/the-god-of-high-school/list?title_no=66');
+const fetchMangas = async (mangaUrl) => {
+    const res = await axios.get(mangaUrl);
     if (res.status === 200) {
         const html = res.data;
         const $ = cheerio.load(html);
-        const godOfHighschoolChapterUrl = $('#_listUl').find('li > a').first()[0].attribs.href;
-        return godOfHighschoolChapterUrl;
+        const mangaChapterUrl = $('#_listUl').find('li > a').first()[0].attribs.href;
+            if (mangaChapterUrl.length > 1) {
+                mangaUrlSet.add(mangaChapterUrl);
+            }
     }
 };
 
-const convertMangaFetchedUrlIntoMangaArray = (url) => {
-    let mangaFetchedArray = [];
-    const urlFields = url.split('/');
-    const title = urlFields[5];
-    const chapter = urlFields[6].split('-')[1];
-    mangaFetchedArray.push({
-        [title]: chapter
+const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
+    let mangaArray = [];
+    const mangaUrlArray = [...mangaUrlSet];
+    mangaUrlArray.map(manga => {
+        const urlFields = manga.split('/');
+        const title = urlFields[5];
+        const chapter = urlFields[6].split('-')[1];
+        mangaArray.push({
+            [title]: chapter
+        });
     });
-    return mangaFetchedArray;
+    return mangaArray;
 }
 
 module.exports = {

@@ -18,9 +18,9 @@ const fetchMangas = async () => {
         const html = res.data;
         const $ = cheerio.load(html);
         $('.active').find('a').each((index, element) => {
-            const mangaUrl = $(element).attr('href');
-            if (mangaUrl.length > 1) {
-                mangaUrlSet.add(mangaUrl);
+            const mangaChapterUrl = $(element).attr('href');
+            if (mangaChapterUrl.length > 1) {
+                mangaUrlSet.add(mangaChapterUrl);
             }
         });
     }
