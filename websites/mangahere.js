@@ -9,7 +9,7 @@ const mangaUrlSet = new Set();
 const scrapMangaHere = async (mangaJsonArray) => {
     await fetchMangas();
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
-    helpers.checkIfNewChapters(mangaJsonArray, mangaFetchedArray, constants.MANGAHERE);
+    helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.MANGAHERE);
 }
 
 const fetchMangas = async () => {

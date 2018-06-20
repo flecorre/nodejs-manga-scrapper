@@ -12,7 +12,7 @@ const scrapWebtoons = async (mangaJsonArray) => {
     await fetchMangas(constants.WEBTOONS_THEGAMER_URL);
     await fetchMangas(constants.WEBTOONS_DICE_URL);
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
-    helpers.checkIfNewChapters(mangaJsonArray, mangaFetchedArray, constants.WEBTOONS);
+    helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.WEBTOONS);
 }
 
 const fetchMangas = async (mangaUrl) => {
@@ -21,9 +21,9 @@ const fetchMangas = async (mangaUrl) => {
         const html = res.data;
         const $ = cheerio.load(html);
         const mangaChapterUrl = $('#_listUl').find('li > a').first()[0].attribs.href;
-            if (mangaChapterUrl.length > 1) {
-                mangaUrlSet.add(mangaChapterUrl);
-            }
+        if (mangaChapterUrl.length > 1) {
+            mangaUrlSet.add(mangaChapterUrl);
+        }
     }
 };
 

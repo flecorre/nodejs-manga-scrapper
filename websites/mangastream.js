@@ -9,7 +9,7 @@ const mangaUrlSet = new Set();
 const scrapMangaStream = async (mangaJsonArray) => {
     await fetchMangas();
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
-    helpers.checkIfNewChapters(mangaJsonArray, mangaFetchedArray, constants.MANGASTREAM);
+    helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.MANGASTREAM);
 }
 
 const fetchMangas = async () => {
@@ -17,7 +17,7 @@ const fetchMangas = async () => {
     if (res.status === 200) {
         const html = res.data;
         const $ = cheerio.load(html);
-        $('.active').find('a').each((index, element) => {
+        $('.new-list').find('li > a').each((index, element) => {
             const mangaChapterUrl = $(element).attr('href');
             if (mangaChapterUrl.length > 1) {
                 mangaUrlSet.add(mangaChapterUrl);

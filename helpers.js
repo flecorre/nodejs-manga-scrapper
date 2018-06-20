@@ -1,18 +1,17 @@
 'use strict'
 const fs = require('fs');
 const newChapters = require('./new-chapters');
-const constants = require('./constants');
 
-const writeJson = (json, newChapters) => {
-    for (const key in newChapters) {
-        if (newChapters.hasOwnProperty(key)) {
-            newChapters[key].map(e => {
-                json[Object.keys(e).toString()] = Object.values(e).toString();
-            })
+const writeJson = (mangaChaptersJson, newChaptersArray) => {
+    for (let key in newChaptersArray) {
+        if (newChaptersArray.hasOwnProperty(key)) {
+            newChaptersArray[key].map(newChapter => {
+                mangaChaptersJson[Object.keys(newChapter).toString()] = Object.values(newChapter).toString();
+            });
         }
     }
-    json = JSON.stringify(json, null, 2);
-    fs.writeFileSync('test.json', json);
+    mangaChaptersJson = JSON.stringify(mangaChaptersJson, null, 2);
+    fs.writeFileSync('test.json', mangaChaptersJson);
 };
 
 const readJson = (file) => {
@@ -35,19 +34,50 @@ const convertMangaJsonIntoArray = (json) => {
     return mangaJsonArray;
 };
 
-const checkIfNewChapters = (jsonMangaArray, fetchedMangaArray, website) => {
+const checkIfChaptersAreNews = (jsonMangaArray, fetchedMangaArray, website) => {
     fetchedMangaArray.map(fetchedChapter => jsonMangaArray.map(jsonChapter => {
         if (Object.keys(fetchedChapter).toString() == Object.keys(jsonChapter).toString()) {
             if (Object.values(fetchedChapter).toString() > Object.values(jsonChapter).toString()) {
-                newChapters.addNewManga(website, fetchedChapter);
+                newChapters.addNewMangaChapter(website, fetchedChapter);
             }
         }
     }));
 };
 
+const isObjectEmpty = (obj) => {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
+const transformObjectIntoString = (obj) => {
+    let newString = 'New chapters: ';
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key))
+            newString = `${newString}\n\n-${key}- `;
+        obj[key].map(e => {
+            newString = `${newString}\n${test(JSON.stringify(e))}`
+        });
+    }
+    return newString;
+}
+
+const test = (arg) => {
+    arg = arg.replace('{', '');
+    arg = arg.replace(/"/g, '');
+    arg = arg.replace('}', '');
+    arg = arg.replace(':', ': ');
+    console.log(arg)
+    return arg;
+}
+
 module.exports = {
     readJson,
     writeJson,
-    checkIfNewChapters,
+    checkIfChaptersAreNews,
     convertMangaJsonIntoArray,
+    isObjectEmpty,
+    transformObjectIntoString
 };

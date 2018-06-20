@@ -1,20 +1,20 @@
 'use strict'
 
-let newMangaArray = {};
+let newMangaChapters = {};
 
-const addNewManga = (website, manga) =>  {
-    if (newMangaArray[website]) {
-        newMangaArray[website].push(manga);
+const addNewMangaChapter = (website, manga) =>  {
+    if (newMangaChapters[website]) {
+        newMangaChapters[website].push(manga);
     } else {
-        newMangaArray[website] = [manga];
+        newMangaChapters[website] = [manga];
     }
 }
 
-const getNewMangaArray = () => {
-    return newMangaArray;
+const getNewMangaChapters = () => {
+    return newMangaChapters;
 }
 
 module.exports = {
-    addNewManga,
-    getNewMangaArray
+    addNewMangaChapter,
+    getNewMangaChapters
 }
