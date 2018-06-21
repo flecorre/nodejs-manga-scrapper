@@ -1,3 +1,4 @@
+require('dotenv').config();
 const nodemailer = require('nodemailer');
 const newChapters = require('./new-chapters');
 const helpers = require('./helpers');
@@ -5,14 +6,14 @@ const helpers = require('./helpers');
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '',
-        pass: ''
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASSWORD
     }
 });
 
 const mailOptions = {
-    from: '',
-    to: '',
+    from: process.env.GMAIL_USER,
+    to: process.env.GMAIL_DESTINATION_ADRESS,
     subject: 'Manga chapters available',
     text: ''
 };

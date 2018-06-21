@@ -8,6 +8,7 @@ const newChapters = require('./new-chapters');
 const helpers = require('./helpers');
 const constants = require('./constants');
 const email = require('./email');
+const CronJob = require('cron').CronJob;
 
 const mangaChaptersJson = helpers.readJson(constants.MANGAS_JSON);
 const mangaChaptersArray = helpers.convertMangaJsonIntoArray(mangaChaptersJson);
@@ -23,5 +24,9 @@ const startBot = async (chapterArray) => {
         helpers.writeJson(mangaChaptersJson, newChapters.getNewMangaChapters())
     }
 }
-
-startBot(mangaChaptersArray);
+let i = 1;
+new CronJob('*/10 * * * *', function() {
+    startBot(mangaChaptersArray);
+    console.log("job run number: " + i);
+    i++;
+}, null, true, 'Europe/Paris');
