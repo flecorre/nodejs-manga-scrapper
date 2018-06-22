@@ -1,6 +1,5 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-const newChapters = require('./new-chapters');
 const helpers = require('./helpers');
 
 const transporter = nodemailer.createTransport({

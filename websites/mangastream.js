@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const helpers = require('../helpers.js');
 const constants = require('../constants');
 
-const mangaUrlSet = new Set();
+let mangaUrlSet = new Set();
 
 const scrapMangaStream = async (mangaJsonArray) => {
     await fetchMangas();

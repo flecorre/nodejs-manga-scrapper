@@ -14,7 +14,13 @@ const getNewMangaChapters = () => {
     return newMangaChapters;
 }
 
+const cleanMangaChapters = () => {
+    newMangaChapters = {};
+    return newMangaChapters;
+}
+
 module.exports = {
     addNewMangaChapter,
-    getNewMangaChapters
+    getNewMangaChapters,
+    cleanMangaChapters
 }

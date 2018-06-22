@@ -1,6 +1,7 @@
 'use strict'
 const fs = require('fs');
 const newChapters = require('./new-chapters');
+const constants = require('./constants');
 
 const writeJson = (mangaChaptersJson, newChaptersArray) => {
     for (let key in newChaptersArray) {
@@ -11,7 +12,7 @@ const writeJson = (mangaChaptersJson, newChaptersArray) => {
         }
     }
     mangaChaptersJson = JSON.stringify(mangaChaptersJson, null, 2);
-    fs.writeFileSync('test.json', mangaChaptersJson);
+    fs.writeFileSync(constants.MANGAS_JSON, mangaChaptersJson);
 };
 
 const readJson = (file) => {
@@ -58,18 +59,17 @@ const transformObjectIntoString = (obj) => {
         if (obj.hasOwnProperty(key))
             newString = `${newString}\n\n-${key}- `;
         obj[key].map(e => {
-            newString = `${newString}\n${test(JSON.stringify(e))}`
+            newString = `${newString}\n${removeUselessChars(JSON.stringify(e))}`
         });
     }
     return newString;
 }
 
-const test = (arg) => {
+const removeUselessChars = (arg) => {
     arg = arg.replace('{', '');
     arg = arg.replace(/"/g, '');
     arg = arg.replace('}', '');
     arg = arg.replace(':', ': ');
-    console.log(arg)
     return arg;
 }
 
