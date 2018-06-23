@@ -1,7 +1,7 @@
 # nodejs-manga-scrapper
 
-A nodejs bot to notify you via email when your new manga chapters are available.
-Currently scrap new chapters from mangastream, mangahere and webtoons.
+A nodejs bot to notify you via emails when your new manga chapters are available.
+Use cheerio to scrap new chapters from mangastream, mangahere and webtoons.
 
 ## Installing / Getting started
 
