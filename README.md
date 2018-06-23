@@ -19,7 +19,7 @@ GMAIL_PASSWORD=
 GMAIL_DESTINATION_ADRESS=
 ```
 
-Enter your manga in mangas.json
+Enter your mangas in mangas.json
 
 ```shell
 {
