@@ -26,7 +26,7 @@ const startBot = async () => {
 }
 
 let runNumber = 1;
-new CronJob('*/1 * * * *', function () {
+new CronJob('*/15 * * * *', function () {
     startBot();
     console.log("job run: " + runNumber);
     runNumber++;
