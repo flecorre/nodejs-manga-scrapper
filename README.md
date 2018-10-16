@@ -5,20 +5,20 @@ Use cheerio to scrap new chapters from mangastream, mangahere and webtoons.
 
 ## Installing / Getting started
 
-Install dependencies
+* Install dependencies
 
 ```shell
 npm install
 ```
 
-Get your telegram token typing:
+* Get your telegram token typing:
 ```shell
 /newbot
 ```
-in a conversation with the telegram BotFather
+in a conversation with the telegram BotFather<br/>
 Once its created, open the chat with your bot in the Telegram application
 
-Get your chat id using some code like:
+* Get your chat id using some code like:
 ```shell
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -29,14 +29,14 @@ bot.startPolling();
 Launch this JS script and type /start in your bot chatroom
 
 
-Create a .env file in root folder and add both token and chat id:
+* Create a .env file in root folder and add both token and chat id:
 
 ```shell
 BOT_TOKEN="abcde"
 CHAT_ID=12345
 ```
 
-Enter your mangas in mangas.json
+* Enter your mangas in mangas.json
 
 ```shell
 {
@@ -47,7 +47,7 @@ Enter your mangas in mangas.json
 }
 ```
 
-Set time interval for scrapping using cron expressions
+* Set time interval for scrapping using cron expressions
 
 ```shell
 new CronJob('*/10 * * * *', function() {
@@ -59,7 +59,7 @@ new CronJob('*/10 * * * *', function() {
 https://docs.oracle.com/cd/E12058_01/doc/doc.1014/e12030/cron_expressions.htm
 ```
 
-Start script
+* Start script
 
 ```shell
 node index.js
