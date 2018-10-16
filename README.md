@@ -11,12 +11,29 @@ Install dependencies
 npm install
 ```
 
-Enter your email credentials in .env
+Get your telegram token typing:
+```shell
+/newbot
+```
+in a conversation with the telegram BotFather
+Once its created, open the chat with your bot in the Telegram application
+
+Get your chat id using some code like:
+```shell
+const Telegraf = require('telegraf');
+const bot = new Telegraf(process.env.BOT_TOKEN);
+
+bot.start((ctx) => ctx.reply(ctx.chat.id));
+bot.startPolling();
+```
+Launch this JS script and type /start in your bot chatroom
+
+
+Create a .env file in root folder and add both token and chat id:
 
 ```shell
-GMAIL_USER=
-GMAIL_PASSWORD=
-GMAIL_DESTINATION_ADRESS=
+BOT_TOKEN="abcde"
+CHAT_ID=12345
 ```
 
 Enter your mangas in mangas.json
