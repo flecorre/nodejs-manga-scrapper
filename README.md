@@ -11,14 +11,14 @@ Use cheerio to scrap new chapters from mangastream, mangahere and webtoons.
 npm install
 ```
 
-* Get your telegram token typing:
+* Create a telegram token
+Open a chatroom with the telegram BotFather and get your Telegram token by typing:
 ```shell
 /newbot
 ```
-in a conversation with the telegram BotFather<br/>
-Once its created, open the chat with your bot in the Telegram application
 
-* Get your chat id using some code like:
+* Get your chat id
+Once you get your token, create a small js script to get your chat id:
 ```shell
 const Telegraf = require('telegraf');
 const bot = new Telegraf(process.env.BOT_TOKEN);
@@ -26,8 +26,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN);
 bot.start((ctx) => ctx.reply(ctx.chat.id));
 bot.startPolling();
 ```
-Launch this JS script and type /start in your bot chatroom
-
+Launch this JS script, open a chatroom with your bot and type /start
 
 * Create a .env file in root folder and add both token and chat id:
 
