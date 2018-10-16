@@ -1,22 +1,24 @@
 'use strict'
 const axios = require('axios');
 const cheerio = require('cheerio');
-const helpers = require('../helpers.js');
-const constants = require('../constants');
+const helpers = require('../common/helpers.js');
+const constants = require('../constants/constants');
 
 const mangaUrlSet = new Set();
 
 const scrapWebtoons = async (mangaJsonArray) => {
-    await fetchMangas(constants.WEBTOONS_GOH_URL);
-    await fetchMangas(constants.WEBTOONS_NOBLESSE_URL);
-    await fetchMangas(constants.WEBTOONS_THEGAMER_URL);
-    await fetchMangas(constants.WEBTOONS_DICE_URL);
+    console.log("Fetching from Webtoons...");
+    await getChaptersFromWebtoons(constants.WEBTOONS_GOH_URL);
+    await getChaptersFromWebtoons(constants.WEBTOONS_NOBLESSE_URL);
+    await getChaptersFromWebtoons(constants.WEBTOONS_THEGAMER_URL);
+    await getChaptersFromWebtoons(constants.WEBTOONS_DICE_URL);
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
     helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.WEBTOONS);
+    console.log("...Done fetching Webtoons!");
 }
 
-const fetchMangas = async (mangaUrl) => {
-    const res = await axios.get(mangaUrl);
+const getChaptersFromWebtoons = async (url) => {
+    const res = await axios.get(url);
     if (res.status === 200) {
         const html = res.data;
         const $ = cheerio.load(html);
@@ -27,9 +29,9 @@ const fetchMangas = async (mangaUrl) => {
     }
 };
 
-const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
+const convertMangaFetchedUrlIntoMangaArray = (url) => {
     let mangaArray = [];
-    const mangaUrlArray = [...mangaUrlSet];
+    const mangaUrlArray = [...url];
     mangaUrlArray.map(manga => {
         const urlFields = manga.split('/');
         const title = urlFields[5];

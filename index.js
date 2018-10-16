@@ -1,33 +1,46 @@
 'use strict'
 
+require('dotenv').config();
 const fs = require('fs');
-const mangaHere = require('./websites/mangahere');
-const mangaStream = require('./websites/mangastream');
-const webToons = require('./websites/webtoons');
-const newChapters = require('./new-chapters');
-const helpers = require('./helpers');
-const constants = require('./constants');
-const email = require('./email');
+const mangahere = require('./websites/mangahere');
+const mangastream = require('./websites/mangastream');
+const webtoons = require('./websites/webtoons');
+const mangaChapters = require('./common/manga-chapters');
+const helpers = require('./common/helpers');
+const constants = require('./constants/constants');
 const CronJob = require('cron').CronJob;
+const Telegraf = require("telegraf");
 
-const startBot = async () => {
-    const mangaChaptersJson = helpers.readJson(constants.MANGAS_JSON);
-    const mangaChaptersArray = helpers.convertMangaJsonIntoArray(mangaChaptersJson);
-    await Promise.all([
-        mangaStream.scrapMangaStream(mangaChaptersArray),
-        webToons.scrapWebtoons(mangaChaptersArray),
-        mangaHere.scrapMangaHere(mangaChaptersArray)
-    ]);
-    if (!helpers.isObjectEmpty(newChapters.getNewMangaChapters())) {
-        email.send(newChapters.getNewMangaChapters());
-        helpers.writeJson(mangaChaptersJson, newChapters.getNewMangaChapters());
-    }
-    newChapters.cleanMangaChapters();
+const bot = new Telegraf(process.env.BOT_TOKEN);
+const chatId = process.env.CHAT_ID;
+
+const mangaChaptersJson = helpers.readJson(constants.MANGAS_JSON);
+const mangaChaptersObject = helpers.convertMangaJsonIntoObject(mangaChaptersJson);
+
+const sendToTelegramChat = (chatId, text) => {
+    bot.telegram.sendMessage(chatId, text);
 }
 
-let runNumber = 1;
-new CronJob('*/15 * * * *', function () {
-    startBot();
-    console.log("job run: " + runNumber);
-    runNumber++;
-}, null, true, 'Europe/Paris');
+const startBot = async (mangaArray) => {
+    await Promise.all([
+        mangastream.scrapMangastream(mangaArray),
+        webtoons.scrapWebtoons(mangaArray),
+        mangahere.scrapMangahere(mangaArray)
+    ]);
+    if (!helpers.isObjectEmpty(mangaChapters.getNewMangaChapters())) {
+        sendToTelegramChat(chatId, helpers.transformToReadableList(mangaChapters.getNewMangaChapters()));
+        //helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
+    }
+    mangaChapters.cleanMangaChapters();
+}
+
+bot.startPolling()
+
+startBot(mangaChaptersObject);
+
+// let runNumber = 1;
+// new CronJob('*/15 * * * *', function () {
+//     startBot(mangaChaptersArray);
+//     console.log("job run: " + runNumber);
+//     runNumber++;
+// }, null, true, 'Europe/Paris');

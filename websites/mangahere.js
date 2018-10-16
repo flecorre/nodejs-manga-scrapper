@@ -1,19 +1,21 @@
 'use strict'
 const axios = require('axios');
 const cheerio = require('cheerio');
-const helpers = require('../helpers.js');
-const constants = require('../constants');
+const helpers = require('../common/helpers.js');
+const constants = require('../constants/constants');
 
 const mangaUrlSet = new Set();
 
-const scrapMangaHere = async (mangaJsonArray) => {
-    await fetchMangas();
+const scrapMangahere = async (mangaJsonArray) => {
+    console.log("Fetching from Mangahere...");
+    await getChaptersFromMangahere(constants.MANGAHERE_URL);
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
     helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.MANGAHERE);
+    console.log("...Done fetching Mangahere!");
 }
 
-const fetchMangas = async () => {
-    const res = await axios.get('https://mangahere.cc');
+const getChaptersFromMangahere = async (url) => {
+    const res = await axios.get(url);
     if (res.status === 200) {
         const html = res.data;
         const $ = cheerio.load(html);
@@ -26,9 +28,9 @@ const fetchMangas = async () => {
     }
 };
 
-const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
+const convertMangaFetchedUrlIntoMangaArray = (urlSet) => {
     let mangaFetchedArray = [];
-    const mangaUrlArray = [...mangaUrlSet];
+    const mangaUrlArray = [...urlSet];
     mangaUrlArray.map(manga => {
         const urlFields = manga.split('/');
         const title = urlFields[4];
@@ -42,5 +44,5 @@ const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
 }
 
 module.exports = {
-    scrapMangaHere,
+    scrapMangahere,
 };

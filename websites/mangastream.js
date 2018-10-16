@@ -1,19 +1,21 @@
 'use strict'
 const axios = require('axios');
 const cheerio = require('cheerio');
-const helpers = require('../helpers.js');
-const constants = require('../constants');
+const helpers = require('../common/helpers.js');
+const constants = require('../constants/constants');
 
 let mangaUrlSet = new Set();
 
-const scrapMangaStream = async (mangaJsonArray) => {
-    await fetchMangas();
+const scrapMangastream = async (mangaJsonArray) => {
+    console.log("Fetching from Mangastream...");
+    await getChaptersFromMangastream(constants.MANGASTREAM_URL);
     const mangaFetchedArray = convertMangaFetchedUrlIntoMangaArray(mangaUrlSet);
     helpers.checkIfChaptersAreNews(mangaJsonArray, mangaFetchedArray, constants.MANGASTREAM);
+    console.log("...Done fetching Mangastream!");
 }
 
-const fetchMangas = async () => {
-    const res = await axios.get('https://readms.net/');
+const getChaptersFromMangastream = async (url) => {
+    const res = await axios.get(url);
     if (res.status === 200) {
         const html = res.data;
         const $ = cheerio.load(html);
@@ -41,5 +43,5 @@ const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
 }
 
 module.exports = {
-    scrapMangaStream,
+    scrapMangastream,
 };

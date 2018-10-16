@@ -22,7 +22,6 @@ bower_components
 .eslintcache
 
 # dotenv environment variables file(s)
-.env
 .env.*
 
 # Build generated
