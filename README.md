@@ -11,13 +11,13 @@ Use cheerio to scrap new chapters from mangastream, mangahere and webtoons.
 npm install
 ```
 
-* Create a telegram token
+* Create a telegram token<br/>
 Open a chatroom with the telegram BotFather and get your Telegram token by typing:
 ```shell
 /newbot
 ```
 
-* Get your chat id
+* Get your chat id<br/>
 Once you get your token, create a small js script to get your chat id:
 ```shell
 const Telegraf = require('telegraf');
