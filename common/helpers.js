@@ -84,6 +84,9 @@ const removeUselessChars = arg => {
 
 const transformToReadableList = (mangaObject) => {
   let readableList = "";
+  if("jaimini" in mangaObject) {
+    readableList += extractChaptersFromObject(mangaObject, "jaimini");
+  }
   if("mangastream" in mangaObject) {
     readableList += extractChaptersFromObject(mangaObject, "mangastream");
   }

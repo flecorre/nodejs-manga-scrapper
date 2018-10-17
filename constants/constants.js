@@ -1,4 +1,6 @@
 module.exports = {
+    JAIMINI: "jaimini",
+    JAIMINI_URL: "https://jaiminisbox.com/reader",
     MANGAS_JSON: "mangas-list/mangas.json",
     MANGAHERE: "mangahere",
     MANGAHERE_URL: "https://mangahere.cc",

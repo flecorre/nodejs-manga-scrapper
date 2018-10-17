@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const fs = require('fs');
+const jaimini = require('./websites/jaimini');
 const mangahere = require('./websites/mangahere');
 const mangastream = require('./websites/mangastream');
 const webtoons = require('./websites/webtoons');
@@ -23,18 +24,19 @@ const sendToTelegramChat = (chatId, text) => {
 
 const startBot = async (mangaArray) => {
     await Promise.all([
+        jaimini.scrapJaimini(mangaArray),
         mangastream.scrapMangastream(mangaArray),
         webtoons.scrapWebtoons(mangaArray),
         mangahere.scrapMangahere(mangaArray)
     ]);
     if (!helpers.isObjectEmpty(mangaChapters.getNewMangaChapters())) {
         sendToTelegramChat(chatId, helpers.transformToReadableList(mangaChapters.getNewMangaChapters()));
-        //helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
+        helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
     }
     mangaChapters.cleanMangaChapters();
 }
 
-bot.startPolling()
+//bot.startPolling()
 
 startBot(mangaChaptersObject);
 
