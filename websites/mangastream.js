@@ -33,13 +33,24 @@ const convertMangaFetchedUrlIntoMangaArray = (mangaUrlSet) => {
     const mangaUrlArray = [...mangaUrlSet];
     mangaUrlArray.map(manga => {
         const urlFields = manga.split('/');
-        const title = urlFields[2];
+        const title = convertTitle(urlFields[2]);
         const chapter = urlFields[3];
         mangaFetchedArray.push({
-            [title]: chapter
+            [title]: chapter.padStart(3, '0')
         });
     });
     return mangaFetchedArray;
+}
+
+const convertTitle = title => {
+    switch(title) {
+        case "neverland":
+            return "the_promised_neverland";
+        case "bclover":
+            return "black_clover";
+        default:
+            return title;
+    }
 }
 
 module.exports = {

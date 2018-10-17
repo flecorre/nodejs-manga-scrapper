@@ -24,12 +24,13 @@ const sendToTelegramChat = (chatId, text) => {
 
 const startBot = async (mangaArray) => {
     await Promise.all([
+        webtoons.scrapWebtoons(mangaArray),
         jaimini.scrapJaimini(mangaArray),
         mangastream.scrapMangastream(mangaArray),
-        webtoons.scrapWebtoons(mangaArray),
         mangahere.scrapMangahere(mangaArray)
     ]);
     if (!helpers.isObjectEmpty(mangaChapters.getNewMangaChapters())) {
+        console.log( helpers.transformToReadableList(mangaChapters.getNewMangaChapters()))
         sendToTelegramChat(chatId, helpers.transformToReadableList(mangaChapters.getNewMangaChapters()));
         helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
     }
