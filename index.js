@@ -42,7 +42,7 @@ bot.startPolling()
 
 let runNumber = 1;
 new CronJob('*/15 * * * *', function () {
-    startBot(mangaChaptersArray);
+    startBot(mangaChaptersObject);
     console.log("job run: " + runNumber);
     runNumber++;
 }, null, true, 'Europe/Paris');
