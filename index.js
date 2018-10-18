@@ -1,10 +1,10 @@
 'use strict'
 
 require('dotenv').config();
-const fs = require('fs');
 const jaimini = require('./websites/jaimini');
 const mangahere = require('./websites/mangahere');
 const mangastream = require('./websites/mangastream');
+const mangareader = require('./websites/mangareader');
 const webtoons = require('./websites/webtoons');
 const mangaChapters = require('./common/manga-chapters');
 const helpers = require('./common/helpers');
@@ -27,23 +27,22 @@ const startBot = async (mangaArray) => {
         webtoons.scrapWebtoons(mangaArray),
         jaimini.scrapJaimini(mangaArray),
         mangastream.scrapMangastream(mangaArray),
-        mangahere.scrapMangahere(mangaArray)
+        mangareader.scrapMangareader(mangaArray),
+        mangahere.scrapMangahere(mangaArray),
     ]);
+    console.log(helpers.transformToReadableList(mangaChapters.getNewMangaChapters()))
     if (!helpers.isObjectEmpty(mangaChapters.getNewMangaChapters())) {
-        console.log( helpers.transformToReadableList(mangaChapters.getNewMangaChapters()))
         sendToTelegramChat(chatId, helpers.transformToReadableList(mangaChapters.getNewMangaChapters()));
         helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
     }
     mangaChapters.cleanMangaChapters();
 }
 
-//bot.startPolling()
+bot.startPolling()
 
-startBot(mangaChaptersObject);
-
-// let runNumber = 1;
-// new CronJob('*/15 * * * *', function () {
-//     startBot(mangaChaptersArray);
-//     console.log("job run: " + runNumber);
-//     runNumber++;
-// }, null, true, 'Europe/Paris');
+let runNumber = 1;
+new CronJob('*/15 * * * *', function () {
+    startBot(mangaChaptersArray);
+    console.log("job run: " + runNumber);
+    runNumber++;
+}, null, true, 'Europe/Paris');

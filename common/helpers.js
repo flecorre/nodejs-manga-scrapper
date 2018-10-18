@@ -93,6 +93,9 @@ const transformToReadableList = (mangaObject) => {
   if("mangahere" in mangaObject) {
     readableList += extractChaptersFromObject(mangaObject, "mangahere");
   }
+  if("mangareader" in mangaObject) {
+    readableList += extractChaptersFromObject(mangaObject, "mangareader");
+  }
   if("webtoons" in mangaObject) {
     readableList += extractChaptersFromObject(mangaObject, "webtoons");
   }

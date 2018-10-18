@@ -4,6 +4,8 @@ module.exports = {
     MANGAS_JSON: "mangas-list/mangas.json",
     MANGAHERE: "mangahere",
     MANGAHERE_URL: "https://mangahere.cc",
+    MANGAREADER: "mangareader",
+    MANGAREADER_URL: "https://www.mangareader.net/",
     MANGASTREAM: "mangastream",
     MANGASTREAM_URL: "https://readms.net/",
     WEBTOONS: "webtoons",
