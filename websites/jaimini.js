@@ -58,6 +58,8 @@ const convertTitle = title => {
             return "edens_zero";
         case "hunter-x-hunter":
             return "hunter_x_hunter";
+        case "boruto-naruto-next-generations":
+            return "boruto";
         default:
             return title;
     }

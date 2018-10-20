@@ -68,6 +68,10 @@ const convertTitle = title => {
             return "the_promised_neverland";
         case "noblesse":
             return "to_exclude";
+        case "the-gamer":
+            return "to_exclude";
+        case "hajime-no-ippo":
+            return "hajime_no_ippo";
         default:
             return title;
     }

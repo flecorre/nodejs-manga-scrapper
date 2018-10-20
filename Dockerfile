@@ -1,7 +1,8 @@
 FROM node:8-alpine
 WORKDIR /app
-COPY package*.json /app
+COPY package.json /app
+COPY package-lock.json /app
+RUN apk add --no-cache bash
 RUN npm install
 COPY . /app
-EXPOSE 8081
-CMD [ "npm", "start" ]
+CMD node index.js

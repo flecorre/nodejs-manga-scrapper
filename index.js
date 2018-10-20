@@ -15,22 +15,20 @@ const Telegraf = require("telegraf");
 const bot = new Telegraf(process.env.BOT_TOKEN);
 const chatId = process.env.CHAT_ID;
 
-const mangaChaptersJson = helpers.readJson(constants.MANGAS_JSON);
-const mangaChaptersObject = helpers.convertMangaJsonIntoObject(mangaChaptersJson);
-
 const sendToTelegramChat = (chatId, text) => {
     bot.telegram.sendMessage(chatId, text);
 }
 
-const startBot = async (mangaArray) => {
+const startBot = async (mangaJson) => {
+    const mangaChaptersJson = helpers.readJson(mangaJson);
+    const mangaChaptersObject = helpers.convertMangaJsonIntoObject(mangaChaptersJson);
     await Promise.all([
-        webtoons.scrapWebtoons(mangaArray),
-        jaimini.scrapJaimini(mangaArray),
-        mangastream.scrapMangastream(mangaArray),
-        mangareader.scrapMangareader(mangaArray),
-        mangahere.scrapMangahere(mangaArray),
+        webtoons.scrapWebtoons(mangaChaptersObject),
+        jaimini.scrapJaimini(mangaChaptersObject),
+        mangastream.scrapMangastream(mangaChaptersObject),
+        mangareader.scrapMangareader(mangaChaptersObject),
+        mangahere.scrapMangahere(mangaChaptersObject),
     ]);
-    console.log(helpers.transformToReadableList(mangaChapters.getNewMangaChapters()))
     if (!helpers.isObjectEmpty(mangaChapters.getNewMangaChapters())) {
         sendToTelegramChat(chatId, helpers.transformToReadableList(mangaChapters.getNewMangaChapters()));
         helpers.writeJson(mangaChaptersJson, mangaChapters.getNewMangaChapters());
@@ -38,11 +36,6 @@ const startBot = async (mangaArray) => {
     mangaChapters.cleanMangaChapters();
 }
 
-bot.startPolling()
-
-let runNumber = 1;
 new CronJob('*/15 * * * *', function () {
-    startBot(mangaChaptersObject);
-    console.log("job run: " + runNumber);
-    runNumber++;
+    startBot(constants.MANGAS_JSON);
 }, null, true, 'Europe/Paris');

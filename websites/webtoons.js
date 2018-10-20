@@ -33,9 +33,8 @@ const convertMangaFetchedUrlIntoMangaArray = (url) => {
     let mangaArray = [];
     const mangaUrlArray = [...url];
     mangaUrlArray.map(manga => {
-        const urlFields = manga.split('/');
-        const title = urlFields[5];
-        const chapter = urlFields[6].split('-')[1].padStart(3, '0');
+        const title = manga.split('/')[5];
+        const chapter = manga.split('=').pop()
         mangaArray.push({
             [title]: chapter
         });
